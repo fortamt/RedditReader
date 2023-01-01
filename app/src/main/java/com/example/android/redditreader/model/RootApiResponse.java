@@ -2,7 +2,7 @@ package com.example.android.redditreader.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Root {
+public class RootApiResponse {
 
     @SerializedName("data")
     OuterDataLayer data;

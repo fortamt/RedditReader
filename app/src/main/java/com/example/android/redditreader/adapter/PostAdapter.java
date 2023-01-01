@@ -13,13 +13,13 @@ import com.example.android.redditreader.R;
 import com.example.android.redditreader.model.Children;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
 
-    private ArrayList<Children> children;
+    private List<Children> children;
 
-    public PostAdapter(ArrayList<Children> children) {
+    public PostAdapter(List<Children> children) {
         this.children = children;
     }
 

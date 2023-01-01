@@ -1,59 +1,47 @@
-package com.example.android.redditreader;
+package com.example.android.redditreader.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 
+import com.example.android.redditreader.R;
 import com.example.android.redditreader.adapter.PostAdapter;
 import com.example.android.redditreader.model.Children;
-import com.example.android.redditreader.model.Root;
-import com.example.android.redditreader.service.RedditApiInstance;
-import com.example.android.redditreader.service.TopPostService;
+import com.example.android.redditreader.viewmodel.MainActivityViewModel;
 
-import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<Children> childrenList;
+    private List<Children> childrenList;
     private PostAdapter adapter;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private MainActivityViewModel mainActivityViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getPosts();
+        mainActivityViewModel = new ViewModelProvider
+                .AndroidViewModelFactory(getApplication())
+                .create(MainActivityViewModel.class);
 
+        getPosts();
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this::getPosts);
     }
 
     private void getPosts() {
-        TopPostService topPostService = RedditApiInstance.getService();
-        Call<Root> call = topPostService.getTopPosts();
-        call.enqueue(new Callback<Root>() {
-            @Override
-            public void onResponse(Call<Root> call, Response<Root> response) {
-                Root root = response.body();
-                if (root != null && root.getData() != null) {
-                    childrenList = (ArrayList<Children>) root.getData().getChildren();
-                    fillRecycleReview();
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-            }
 
-            @Override
-            public void onFailure(Call<Root> call, Throwable t) {
-            }
+        mainActivityViewModel.getAllPosts().observe(this, children -> {
+            childrenList = children;
+            fillRecycleReview();
         });
     }
 
@@ -63,5 +51,6 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        swipeRefreshLayout.setRefreshing(false);
     }
 }
