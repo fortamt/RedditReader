@@ -6,6 +6,10 @@ android {
     namespace 'com.example.android.redditreader'
     compileSdk 32
 
+    dataBinding {
+        enabled=true
+    }
+
     defaultConfig {
         applicationId "com.example.android.redditreader"
         minSdk 21

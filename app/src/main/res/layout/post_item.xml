@@ -1,69 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    card_view:cardCornerRadius="4dp"
-    card_view:cardElevation="4dp"
-    card_view:cardUseCompatPadding="true"
-    tools:layout_editor_absoluteX="1dp"
-    tools:layout_editor_absoluteY="57dp">
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
-        android:layout_width="380dp"
+    <data>
+        <variable
+            name="innerDataLayer"
+            type="com.example.android.redditreader.model.InnerDataLayer" />
+    </data>
+
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:layout_marginStart="20dp"
-        android:orientation="vertical"
-        android:padding="8dp">
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="4dp"
+        card_view:cardUseCompatPadding="true"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="57dp">
 
-        <ImageView
-            android:id="@+id/postImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@mipmap/ic_launcher" />
-
-        <TextView
-            android:id="@+id/authorName"
-            android:layout_width="150dp"
+        <RelativeLayout
+            android:layout_width="380dp"
             android:layout_height="wrap_content"
+            android:layout_margin="4dp"
             android:layout_marginStart="20dp"
-            android:layout_toEndOf="@id/postImage"
-            android:text="author"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:padding="8dp">
 
-        <TextView
-            android:id="@+id/quantityOfComments"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/authorName"
-            android:layout_marginStart="20dp"
-            android:layout_toEndOf="@id/postImage"
-            android:text="comm"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/postImage"
+                bind:thumbnail="@{innerDataLayer.thumbnail}"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@mipmap/ic_launcher" />
 
-        <TextView
-            android:id="@+id/timeAgo"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/quantityOfComments"
-            android:layout_marginStart="20dp"
-            android:layout_toEndOf="@id/postImage"
-            android:text="time"
-            android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/authorName"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@id/postImage"
+                android:text="@{innerDataLayer.author}"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="20dp"
-            android:layout_toEndOf="@id/authorName"
-            android:text="DWNLD" />
+            <TextView
+                android:id="@+id/quantityOfComments"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/authorName"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@id/postImage"
+                android:text="@{innerDataLayer.numComments}"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/timeAgo"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/quantityOfComments"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@id/postImage"
+                android:text="@{innerDataLayer.created}"
+                android:textSize="15sp"/>
 
-</androidx.cardview.widget.CardView>
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="20dp"
+                android:layout_toEndOf="@id/authorName"
+                android:text="DWNLD" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

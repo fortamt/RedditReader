@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class RootApiResponse {
 
     @SerializedName("data")
-    OuterDataLayer data;
+    private OuterDataLayer data;
 
     public void setData(OuterDataLayer data) {
         this.data = data;

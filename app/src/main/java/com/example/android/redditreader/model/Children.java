@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class Children {
 
     @SerializedName("data")
-    InnerDataLayer data;
+    private InnerDataLayer data;
 
     public void setData(InnerDataLayer data) {
         this.data = data;

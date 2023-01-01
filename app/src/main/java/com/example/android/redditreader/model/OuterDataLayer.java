@@ -7,16 +7,16 @@ import java.util.List;
 public class OuterDataLayer {
 
     @SerializedName("after")
-    String after;
+    private String after;
 
     @SerializedName("dist")
-    int dist;
+    private int dist;
 
     @SerializedName("children")
-    List<Children> children;
+    private List<Children> children;
 
     @SerializedName("before")
-    String before;
+    private String before;
 
 
     public void setAfter(String after) {
