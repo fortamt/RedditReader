@@ -22,6 +22,7 @@ public class OuterDataLayer {
     public void setAfter(String after) {
         this.after = after;
     }
+
     public String getAfter() {
         return after;
     }
@@ -29,6 +30,7 @@ public class OuterDataLayer {
     public void setDist(int dist) {
         this.dist = dist;
     }
+
     public int getDist() {
         return dist;
     }
@@ -36,6 +38,7 @@ public class OuterDataLayer {
     public void setChildren(List<Children> children) {
         this.children = children;
     }
+
     public List<Children> getChildren() {
         return children;
     }
@@ -43,6 +46,7 @@ public class OuterDataLayer {
     public void setBefore(String before) {
         this.before = before;
     }
+
     public String getBefore() {
         return before;
     }

@@ -10,6 +10,7 @@ public class Root {
     public void setData(OuterDataLayer data) {
         this.data = data;
     }
+
     public OuterDataLayer getData() {
         return data;
     }

@@ -2,6 +2,8 @@ package com.example.android.redditreader.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.concurrent.TimeUnit;
+
 public class InnerDataLayer {
 
     @SerializedName("thumbnail")
@@ -24,8 +26,10 @@ public class InnerDataLayer {
         this.thumbnail = thumbnail;
     }
 
-    public long getCreated() {
-        return created;
+    public String getCreated() {
+        long different = System.currentTimeMillis() - created * 1000;
+        String postedAgo = Long.toString(TimeUnit.MILLISECONDS.toHours(different));
+        return postedAgo + " hours ago";
     }
 
     public void setCreated(long created) {
