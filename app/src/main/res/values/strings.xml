@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Reddit Reader</string>
+    <string name="title_activity_fullscreen_image">FullscreenImageActivity</string>
 </resources>

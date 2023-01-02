@@ -16,9 +16,11 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
 
     private List<Children> childrenList;
+    private RecyclerViewClickInterface recyclerViewClickInterface;
 
-    public PostAdapter(List<Children> children) {
+    public PostAdapter(List<Children> children, RecyclerViewClickInterface recyclerViewClickInterface) {
         this.childrenList = children;
+        this.recyclerViewClickInterface = recyclerViewClickInterface;
     }
 
     @NonNull
@@ -49,6 +51,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         public PostViewHolder(@NonNull PostItemBinding postItemBinding) {
             super(postItemBinding.getRoot());
             this.postItemBinding = postItemBinding;
+
+            postItemBinding.postImage.setOnClickListener(
+                    view -> recyclerViewClickInterface.onImageClick(getAdapterPosition()));
+
+            postItemBinding.button.setOnClickListener(
+                    view -> recyclerViewClickInterface.onDownloadButtonClick(getAdapterPosition()));
         }
     }
 }

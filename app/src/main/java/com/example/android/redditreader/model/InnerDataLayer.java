@@ -27,6 +27,9 @@ public class InnerDataLayer extends BaseObservable {
                 .into(imageView);
     }
 
+    @SerializedName(("url"))
+    private String betterImageUrl;
+
     @SerializedName("created")
     private long created;
 
@@ -76,5 +79,13 @@ public class InnerDataLayer extends BaseObservable {
     public void setNumComments(int numComments) {
         this.numComments = numComments;
         notifyPropertyChanged(BR.numComments);
+    }
+
+    public String getBetterImageUrl() {
+        return betterImageUrl;
+    }
+
+    public void setBetterImageUrl(String betterImageUrl) {
+        this.betterImageUrl = betterImageUrl;
     }
 }
