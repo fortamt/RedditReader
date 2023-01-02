@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:bind="http://schemas.android.com/apk/res-auto">
@@ -11,7 +11,7 @@
             type="com.example.android.redditreader.model.InnerDataLayer" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
         tools:layout_editor_absoluteY="57dp">
 
         <RelativeLayout
-            android:layout_width="380dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_marginStart="20dp"
@@ -38,25 +38,26 @@
 
             <ImageView
                 android:id="@+id/authorIcon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/postImage"
                 android:src="@drawable/author"/>
 
             <ImageView
                 android:id="@+id/commentIcon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_toEndOf="@id/postImage"
-                android:layout_below="@+id/authorIcon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_toEndOf="@id/authorName"
+                android:layout_centerVertical="true"
                 android:src="@drawable/comment"/>
 
             <TextView
                 android:id="@+id/authorName"
                 android:layout_width="150dp"
                 android:layout_height="25dp"
-                android:layout_marginStart="5dp"
                 android:layout_toEndOf="@id/authorIcon"
+                android:layout_centerVertical="true"
                 android:text="@{innerDataLayer.author}"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -65,21 +66,20 @@
                 android:id="@+id/quantityOfComments"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/authorName"
-                android:layout_marginStart="5dp"
                 android:layout_toEndOf="@id/commentIcon"
+                android:layout_centerVertical="true"
                 android:text="@{innerDataLayer.numComments}"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/timeAgo"
-                android:layout_width="150dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/quantityOfComments"
+                android:layout_centerVertical="true"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
-                android:layout_toEndOf="@id/postImage"
+                android:layout_toEndOf="@id/quantityOfComments"
                 android:text="@{innerDataLayer.created}"
                 android:textSize="15sp"/>
 
@@ -89,10 +89,9 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="20dp"
                 android:background="@color/white"
-                android:layout_marginTop="20dp"
-                android:layout_toEndOf="@id/authorName"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/timeAgo"
                 bind:srcCompat="@drawable/download" />
-
 
         </RelativeLayout>
 
