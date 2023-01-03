@@ -19,17 +19,15 @@ import android.os.Environment;
 import android.widget.Toast;
 
 import com.example.android.redditreader.R;
+import com.example.android.redditreader.adapter.ChildrenComparator;
 import com.example.android.redditreader.adapter.PostAdapter;
 import com.example.android.redditreader.adapter.RecyclerViewClickInterface;
 import com.example.android.redditreader.databinding.ActivityMainBinding;
-import com.example.android.redditreader.model.Children;
-import com.example.android.redditreader.viewmodel.MainActivityViewModel;
 
-import java.util.List;
+import com.example.android.redditreader.viewmodel.MainActivityViewModel;
 
 public class MainActivity extends AppCompatActivity implements RecyclerViewClickInterface {
 
-    private List<Children> childrenList;
     private PostAdapter adapter;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -45,27 +43,25 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
 
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        mainActivityViewModel = new ViewModelProvider
-                .AndroidViewModelFactory(getApplication())
-                .create(MainActivityViewModel.class);
+        mainActivityViewModel = new ViewModelProvider(this)
+                .get(MainActivityViewModel.class);
 
-        getPosts();
         swipeRefreshLayout = activityMainBinding.swipeRefreshLayout;
         swipeRefreshLayout.setOnRefreshListener(this::getPosts);
+
+        getPosts();
     }
 
     private void getPosts() {
-
-        mainActivityViewModel.getAllPosts().observe(this, children -> {
-            childrenList = children;
-            fillRecycleReview();
-        });
+        fillRecycleReview();
+        adapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
+        mainActivityViewModel.getAllPosts().observe(this, childrenPagingData ->
+                adapter.submitData(getLifecycle(), childrenPagingData));
     }
 
     private void fillRecycleReview() {
         recyclerView = activityMainBinding.recyclerView;
-        adapter = new PostAdapter(childrenList, this);
-        adapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
+        adapter = new PostAdapter(new ChildrenComparator(), this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -75,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
     @Override
     public void onImageClick(int position) {
         Intent fullScreenIntent = new Intent(this, FullScreenImageActivity.class);
-        fullScreenIntent.setData(Uri.parse(childrenList.get(position).getData().getBetterImageUrl()));
+        fullScreenIntent.setData(Uri.parse(adapter.snapshot().get(position).getData().getBetterImageUrl()));
         startActivity(fullScreenIntent);
     }
 
@@ -87,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
             }
         }
-        String url = childrenList.get(position).getData().getBetterImageUrl();
+        String url = adapter.snapshot().get(position).getData().getBetterImageUrl();
         downloadImage(url, "downloadedImage");
     }
 

@@ -1,6 +1,8 @@
 package com.example.android.redditreader.service;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.guava.GuavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RedditApiInstance {
@@ -15,6 +17,7 @@ public class RedditApiInstance {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(GuavaCallAdapterFactory.create())
                     .build();
         }
 

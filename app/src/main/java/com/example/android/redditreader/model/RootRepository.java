@@ -1,42 +1,41 @@
 package com.example.android.redditreader.model;
 
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelKt;
+import androidx.paging.Pager;
+import androidx.paging.PagingConfig;
+import androidx.paging.PagingData;
+import androidx.paging.PagingLiveData;
 
-import com.example.android.redditreader.service.RedditApiInstance;
-import com.example.android.redditreader.service.TopPostService;
+import com.example.android.redditreader.viewmodel.MainActivityViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import kotlinx.coroutines.CoroutineScope;
 
 public class RootRepository {
 
     private List<Children> childrenList = new ArrayList<>();
     private MutableLiveData<List<Children>> mutableLiveData = new MutableLiveData<>();
+    private MainActivityViewModel mainActivityViewModel;
 
-    public MutableLiveData<List<Children>> getMutableLiveData() {
+    public RootRepository(MainActivityViewModel mainActivityViewModel) {
+        this.mainActivityViewModel = mainActivityViewModel;
+    }
 
-        TopPostService topPostService = RedditApiInstance.getService();
-        Call<RootApiResponse> call = topPostService.getTopPosts();
-        call.enqueue(new Callback<RootApiResponse>() {
-            @Override
-            public void onResponse(Call<RootApiResponse> call, Response<RootApiResponse> response) {
-                RootApiResponse root = response.body();
-                if (root != null && root.getData() != null) {
-                    childrenList = (ArrayList<Children>) root.getData().getChildren();
-                    mutableLiveData.setValue(childrenList);
-                }
-            }
+    public LiveData<PagingData<Children>> getPagingLiveData(){
 
-            @Override
-            public void onFailure(Call<RootApiResponse> call, Throwable t) {
-            }
-        });
+        CoroutineScope viewModelScope = ViewModelKt.getViewModelScope(mainActivityViewModel);
+        Pager<String, Children> pager = new Pager(new PagingConfig(25),
+                () -> new PostPagingSource(Executors.newCachedThreadPool()));
 
-        return mutableLiveData;
+        LiveData<PagingData<Children>> pagingDataLiveData =
+                PagingLiveData.cachedIn(PagingLiveData.getLiveData(pager), viewModelScope);
+
+        return pagingDataLiveData;
     }
 }

@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.paging.PagingDataAdapter;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.redditreader.R;
@@ -13,13 +15,12 @@ import com.example.android.redditreader.model.Children;
 
 import java.util.List;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
+public class PostAdapter extends PagingDataAdapter<Children , PostAdapter.PostViewHolder> {
 
-    private List<Children> childrenList;
     private RecyclerViewClickInterface recyclerViewClickInterface;
 
-    public PostAdapter(List<Children> children, RecyclerViewClickInterface recyclerViewClickInterface) {
-        this.childrenList = children;
+    public PostAdapter(@NonNull DiffUtil.ItemCallback<Children> diffCallback, RecyclerViewClickInterface recyclerViewClickInterface) {
+        super(diffCallback);
         this.recyclerViewClickInterface = recyclerViewClickInterface;
     }
 
@@ -35,13 +36,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
-        Children children = childrenList.get(position);
+        Children children = getItem(position);
         holder.postItemBinding.setInnerDataLayer(children.getData());
-    }
-
-    @Override
-    public int getItemCount() {
-        return childrenList.size();
     }
 
     class PostViewHolder extends RecyclerView.ViewHolder {
