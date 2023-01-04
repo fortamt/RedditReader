@@ -15,6 +15,9 @@ import java.util.concurrent.TimeUnit;
 
 public class InnerDataLayer extends BaseObservable {
 
+    @SerializedName("id")
+    private String id;
+
     @SerializedName("thumbnail")
     private String thumbnail;
 
@@ -38,6 +41,14 @@ public class InnerDataLayer extends BaseObservable {
 
     @SerializedName("num_comments")
     private int numComments;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     @Bindable
     public String getThumbnail() {
@@ -82,6 +93,9 @@ public class InnerDataLayer extends BaseObservable {
     }
 
     public String getBetterImageUrl() {
+        if (betterImageUrl.charAt(8) == 'v') {
+            return thumbnail;
+        }
         return betterImageUrl;
     }
 

@@ -13,11 +13,9 @@ import com.example.android.redditreader.R;
 import com.example.android.redditreader.databinding.PostItemBinding;
 import com.example.android.redditreader.model.Children;
 
-import java.util.List;
-
 public class PostAdapter extends PagingDataAdapter<Children , PostAdapter.PostViewHolder> {
 
-    private RecyclerViewClickInterface recyclerViewClickInterface;
+    private final RecyclerViewClickInterface recyclerViewClickInterface;
 
     public PostAdapter(@NonNull DiffUtil.ItemCallback<Children> diffCallback, RecyclerViewClickInterface recyclerViewClickInterface) {
         super(diffCallback);
@@ -42,7 +40,7 @@ public class PostAdapter extends PagingDataAdapter<Children , PostAdapter.PostVi
 
     class PostViewHolder extends RecyclerView.ViewHolder {
 
-        private PostItemBinding postItemBinding;
+        private final PostItemBinding postItemBinding;
 
         public PostViewHolder(@NonNull PostItemBinding postItemBinding) {
             super(postItemBinding.getRoot());

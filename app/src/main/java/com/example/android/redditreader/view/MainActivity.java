@@ -12,6 +12,7 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,7 +30,6 @@ import com.example.android.redditreader.viewmodel.MainActivityViewModel;
 public class MainActivity extends AppCompatActivity implements RecyclerViewClickInterface {
 
     private PostAdapter adapter;
-    private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private MainActivityViewModel mainActivityViewModel;
     private ActivityMainBinding activityMainBinding;
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        removeTopBarInLandScapeMode();
 
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         getPosts();
     }
 
+
+
     private void getPosts() {
         fillRecycleReview();
         adapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
@@ -60,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
     }
 
     private void fillRecycleReview() {
-        recyclerView = activityMainBinding.recyclerView;
+        RecyclerView recyclerView = activityMainBinding.recyclerView;
         adapter = new PostAdapter(new ChildrenComparator(), this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -84,16 +87,22 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
             }
         }
         String url = adapter.snapshot().get(position).getData().getBetterImageUrl();
-        downloadImage(url, "downloadedImage");
+        downloadImage(url);
     }
 
-    private void downloadImage(String url, String fileName) {
+    private void downloadImage(String url) {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         request.setDescription("Downloading image");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.allowScanningByMediaScanner();
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "downloadedImage");
         DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         manager.enqueue(request);
+    }
+
+    private void removeTopBarInLandScapeMode() {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            getSupportActionBar().hide();
+        }
     }
 }

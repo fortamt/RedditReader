@@ -12,7 +12,8 @@ import com.example.android.redditreader.model.RootRepository;
 
 public class MainActivityViewModel extends AndroidViewModel {
 
-    private RootRepository rootRepository;
+    private final RootRepository rootRepository;
+    private LiveData<PagingData<Children>> childrenPagedData = null;
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
@@ -20,7 +21,9 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public LiveData<PagingData<Children>> getAllPosts() {
-        return rootRepository.getPagingLiveData();
+        if (childrenPagedData == null) {
+            childrenPagedData = rootRepository.getPagingLiveData();
+        }
+        return childrenPagedData;
     }
-
 }
