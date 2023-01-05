@@ -16,8 +16,6 @@ import com.squareup.picasso.Picasso;
 
 public class FullScreenImageActivity extends AppCompatActivity {
 
-    private ActivityFullScreenImageBinding activityFullScreenImageBinding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +25,7 @@ public class FullScreenImageActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_full_screen_image);
 
-        activityFullScreenImageBinding = DataBindingUtil.setContentView(
+        ActivityFullScreenImageBinding activityFullScreenImageBinding = DataBindingUtil.setContentView(
                 this, R.layout.activity_full_screen_image);
 
         ImageView fullScreenImageView = activityFullScreenImageBinding.fullScreenImageView;

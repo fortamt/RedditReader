@@ -9,9 +9,6 @@ public class OuterDataLayer {
     @SerializedName("after")
     private String after;
 
-    @SerializedName("dist")
-    private int dist;
-
     @SerializedName("children")
     private List<Children> children;
 
@@ -25,14 +22,6 @@ public class OuterDataLayer {
 
     public String getAfter() {
         return after;
-    }
-
-    public void setDist(int dist) {
-        this.dist = dist;
-    }
-
-    public int getDist() {
-        return dist;
     }
 
     public void setChildren(List<Children> children) {
@@ -50,5 +39,4 @@ public class OuterDataLayer {
     public String getBefore() {
         return before;
     }
-
 }

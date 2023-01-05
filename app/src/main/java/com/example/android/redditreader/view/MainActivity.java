@@ -1,5 +1,7 @@
 package com.example.android.redditreader.view;
 
+import static autodispose2.AutoDispose.autoDisposable;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -27,6 +29,10 @@ import com.example.android.redditreader.databinding.ActivityMainBinding;
 
 import com.example.android.redditreader.viewmodel.MainActivityViewModel;
 
+import java.util.Objects;
+
+import autodispose2.androidx.lifecycle.AndroidLifecycleScopeProvider;
+
 public class MainActivity extends AppCompatActivity implements RecyclerViewClickInterface {
 
     private PostAdapter adapter;
@@ -53,13 +59,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
         getPosts();
     }
 
-
-
     private void getPosts() {
         fillRecycleReview();
         adapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
-        mainActivityViewModel.getAllPosts().observe(this, childrenPagingData ->
-                adapter.submitData(getLifecycle(), childrenPagingData));
+        mainActivityViewModel.getAllPosts()
+                .to(autoDisposable(AndroidLifecycleScopeProvider.from(this)))
+                .subscribe(pagingData -> adapter.submitData(getLifecycle(), pagingData));
     }
 
     private void fillRecycleReview() {
@@ -74,7 +79,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
     @Override
     public void onImageClick(int position) {
         Intent fullScreenIntent = new Intent(this, FullScreenImageActivity.class);
-        fullScreenIntent.setData(Uri.parse(adapter.snapshot().get(position).getData().getBetterImageUrl()));
+        fullScreenIntent.setData(Uri.parse(Objects.requireNonNull(
+                adapter.snapshot().get(position)).getData().getBetterImageUrl()));
         startActivity(fullScreenIntent);
     }
 
@@ -86,7 +92,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewClick
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
             }
         }
-        String url = adapter.snapshot().get(position).getData().getBetterImageUrl();
+        String url = Objects.requireNonNull(
+                adapter.snapshot().get(position)).getData().getBetterImageUrl();
         downloadImage(url);
     }
 
